@@ -1,0 +1,101 @@
+{\rtf1\ansi\ansicpg1252\cocoartf2761
+\cocoatextscaling0\cocoaplatform0{\fonttbl\f0\fswiss\fcharset0 Helvetica;\f1\fswiss\fcharset0 Helvetica-Bold;\f2\froman\fcharset0 Times-Roman;
+}
+{\colortbl;\red255\green255\blue255;\red0\green0\blue0;}
+{\*\expandedcolortbl;;\cssrgb\c0\c0\c0;}
+{\*\listtable{\list\listtemplateid1\listhybrid{\listlevel\levelnfc0\levelnfcn0\leveljc0\leveljcn0\levelfollow0\levelstartat1\levelspace360\levelindent0{\*\levelmarker \{decimal\}}{\leveltext\leveltemplateid1\'01\'00;}{\levelnumbers\'01;}\fi-360\li720\lin720 }{\listname ;}\listid1}
+{\list\listtemplateid2\listhybrid{\listlevel\levelnfc23\levelnfcn23\leveljc0\leveljcn0\levelfollow0\levelstartat1\levelspace360\levelindent0{\*\levelmarker \{disc\}}{\leveltext\leveltemplateid101\'01\uc0\u8226 ;}{\levelnumbers;}\fi-360\li720\lin720 }{\listname ;}\listid2}}
+{\*\listoverridetable{\listoverride\listid1\listoverridecount0\ls1}{\listoverride\listid2\listoverridecount0\ls2}}
+\paperw11900\paperh16840\margl1440\margr1440\vieww18980\viewh12000\viewkind0
+\deftab720
+\pard\pardeftab720\sa240\partightenfactor0
+
+\f0\fs24 \cf0 \expnd0\expndtw0\kerning0
+\outl0\strokewidth0 \strokec2 The project implements a SOAP-based web service with a client and an intermediary. The expected behavior of the system is as follows:\
+\pard\tx220\tx720\pardeftab720\li720\fi-720\sa240\partightenfactor0
+\ls1\ilvl0\cf0 \kerning1\expnd0\expndtw0 \outl0\strokewidth0 {\listtext	1	}\expnd0\expndtw0\kerning0
+\outl0\strokewidth0 \strokec2 The client (
+\fs26 SOAPClient.java
+\fs24 ) sends a SOAP request to 
+\fs26 SOAPIntermediaryServlet.java
+\fs24  instead of directly to 
+\fs26 ProductionService
+\fs24 . The request contains an 
+\fs26 orderId
+\fs24  and a 
+\fs26 productType
+\fs24 . If the client wants to prioritize the request, it includes a header 
+\fs26 priority
+\fs24  with the value 
+\fs26 High
+\fs24 .\
+\ls1\ilvl0\kerning1\expnd0\expndtw0 \outl0\strokewidth0 {\listtext	2	}\expnd0\expndtw0\kerning0
+\outl0\strokewidth0 \strokec2 The SOAP Intermediary (
+\fs26 SOAPIntermediaryServlet.java
+\fs24 ) intercepts the request. It checks if the 
+\fs26 priority
+\fs24  header exists and if its value is 
+\fs26 High
+\fs24 .\
+\ls1\ilvl0\kerning1\expnd0\expndtw0 \outl0\strokewidth0 {\listtext	3	}\expnd0\expndtw0\kerning0
+\outl0\strokewidth0 \strokec2 If the priority is 
+\fs26 High
+\fs24 , the intermediary modifies the request by multiplying the 
+\fs26 orderId
+\fs24  by 2. This means that an order originally sent with 
+\fs26 orderId = 123
+\fs24  will be forwarded to the real service with 
+\fs26 orderId = 246
+\fs24 .\
+\ls1\ilvl0\kerning1\expnd0\expndtw0 \outl0\strokewidth0 {\listtext	4	}\expnd0\expndtw0\kerning0
+\outl0\strokewidth0 \strokec2 The modified request is then forwarded to 
+\fs26 ProductionService
+\fs24  at 
+\fs26 http://127.0.0.1:8000/ProductionService
+\fs24 .\
+\ls1\ilvl0
+\fs26 \kerning1\expnd0\expndtw0 \outl0\strokewidth0 {\listtext	5	}\expnd0\expndtw0\kerning0
+\outl0\strokewidth0 \strokec2 ProductionService
+\fs24  processes the request and returns a SOAP response containing a 
+\fs26 responseMessage
+\fs24 , such as 
+\fs26 Order planned successfully
+\fs24 .\
+\ls1\ilvl0\kerning1\expnd0\expndtw0 \outl0\strokewidth0 {\listtext	6	}\expnd0\expndtw0\kerning0
+\outl0\strokewidth0 \strokec2 The SOAP Intermediary receives the response and adds an extra header 
+\fs26 processedBy
+\fs24  with the value 
+\fs26 Processed by SOAP Intermediary
+\fs24 , indicating that the request passed through the intermediary.\
+\ls1\ilvl0\kerning1\expnd0\expndtw0 \outl0\strokewidth0 {\listtext	7	}\expnd0\expndtw0\kerning0
+\outl0\strokewidth0 \strokec2 The final response, including the 
+\fs26 processedBy
+\fs24  header, is sent back to the client (
+\fs26 SOAPClient.java
+\fs24 ).\
+\pard\pardeftab720\sa280\partightenfactor0
+
+\f1\b\fs28 \cf0 \strokec2 Results
+\f0\b0 \
+\pard\tx220\tx720\pardeftab720\li720\fi-720\partightenfactor0
+\ls2\ilvl0
+\fs24 \cf0 \kerning1\expnd0\expndtw0 \outl0\strokewidth0 {\listtext	\uc0\u8226 	}\expnd0\expndtw0\kerning0
+\outl0\strokewidth0 \strokec2 When the client sends a normal request without the 
+\fs26 priority
+\fs24  header, the 
+\fs26 orderId
+\fs24  remains unchanged and the response is forwarded as received.\
+\ls2\ilvl0\kerning1\expnd0\expndtw0 \outl0\strokewidth0 {\listtext	\uc0\u8226 	}\expnd0\expndtw0\kerning0
+\outl0\strokewidth0 \strokec2 When the client sends a request with 
+\fs26 priority = High
+\fs24 , the 
+\fs26 orderId
+\fs24  is doubled before reaching 
+\fs26 ProductionService
+\fs24 , and the client receives the processed response.\
+\ls2\ilvl0\kerning1\expnd0\expndtw0 \outl0\strokewidth0 {\listtext	\uc0\u8226 	}\expnd0\expndtw0\kerning0
+\outl0\strokewidth0 \strokec2 In both cases, the response contains an additional 
+\fs26 processedBy
+\fs24  header confirming that it was handled by the SOAP intermediary.
+\f2 \
+}
