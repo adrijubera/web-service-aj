@@ -1,0 +1,9 @@
+eclipse.preferences.version=1
+encoding//src/main/java/mock_web_service/tutorial2/GetInventoryStatus.java=UTF-8
+encoding//src/main/java/mock_web_service/tutorial2/GetInventoryStatusResponse.java=UTF-8
+encoding//src/main/java/mock_web_service/tutorial2/InventoryService.java=UTF-8
+encoding//src/main/java/mock_web_service/tutorial2/InventoryServiceBindingImpl.java=UTF-8
+encoding//src/main/java/mock_web_service/tutorial2/InventoryServiceBindingSkeleton.java=UTF-8
+encoding//src/main/java/mock_web_service/tutorial2/InventoryServiceBindingStub.java=UTF-8
+encoding//src/main/java/mock_web_service/tutorial2/InventoryServiceLocator.java=UTF-8
+encoding//src/main/java/mock_web_service/tutorial2/InventoryServicePortType.java=UTF-8
