@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<definitions xmlns="http://schemas.xmlsoap.org/wsdl/"
+             xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/"
+             xmlns:xsd="http://www.w3.org/2001/XMLSchema"
+             xmlns:tns="http://bpel.tutorial7.process"
+             targetNamespace="http://bpel.tutorial7.process">
+
+    <types>
+        <xsd:schema targetNamespace="http://bpel.tutorial7.process"
+                    xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+            <xsd:element name="processRequest">
+                <xsd:complexType>
+                    <xsd:sequence>
+                        <xsd:element name="productId" type="xsd:int"/>
+                        <xsd:element name="orderId" type="xsd:int"/>
+                    </xsd:sequence>
+                </xsd:complexType>
+            </xsd:element>
+
+            <xsd:element name="processResponse">
+                <xsd:complexType>
+                    <xsd:sequence>
+                        <xsd:element name="resultMessage" type="xsd:string"/>
+                    </xsd:sequence>
+                </xsd:complexType>
+            </xsd:element>
+        </xsd:schema>
+    </types>
+
+    <message name="processRequestMessage">
+        <part name="parameters" element="tns:processRequest"/>
+    </message>
+
+    <message name="processResponseMessage">
+        <part name="parameters" element="tns:processResponse"/>
+    </message>
+
+    <portType name="ProductionProcessPortType">
+        <operation name="process">
+            <input message="tns:processRequestMessage"/>
+            <output message="tns:processResponseMessage"/>
+        </operation>
+    </portType>
+
+    <binding name="ProductionProcessBinding" type="tns:ProductionProcessPortType">
+        <soap:binding transport="http://schemas.xmlsoap.org/soap/http" style="document"/>
+        <operation name="process">
+            <soap:operation soapAction=""/>
+            <input><soap:body use="literal"/></input>
+            <output><soap:body use="literal"/></output>
+        </operation>
+    </binding>
+
+    <service name="ProductionProcessService">
+        <port name="ProductionProcessPort" binding="tns:ProductionProcessBinding">
+            <soap:address location="http://localhost:8080/ode/processes/ProductionProcess"/>
+        </port>
+    </service>
+</definitions>

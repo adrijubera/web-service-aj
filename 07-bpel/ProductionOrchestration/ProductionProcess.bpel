@@ -1,0 +1,81 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<process name="ProductionProcess"
+         targetNamespace="http://bpel.tutorial7.process"
+         xmlns="http://docs.oasis-open.org/wsbpel/2.0/process/executable"
+         xmlns:inv="http://tutorial2.mock_web_service"
+         xmlns:prod="http://tutorial2.mock_web_service"
+         xmlns:tns="http://bpel.tutorial7.process"
+         xmlns:xsd="http://www.w3.org/2001/XMLSchema"
+         xmlns:bpws="http://docs.oasis-open.org/wsbpel/2.0/process/executable"
+         xmlns:plnk="http://docs.oasis-open.org/wsbpel/2.0/plnktype">
+
+    <partnerLinks>
+        <partnerLink name="client" partnerLinkType="tns:ClientLink" myRole="myRole"/>
+        <partnerLink name="InventoryPartner" partnerLinkType="tns:InventoryLink" partnerRole="inventoryRole"/>
+        <partnerLink name="ProductionPartner" partnerLinkType="tns:ProductionLink" partnerRole="productionRole"/>
+    </partnerLinks>
+
+    <variables>
+        <variable name="input" messageType="tns:processRequestMessage"/>
+        <variable name="output" messageType="tns:processResponseMessage"/>
+        <variable name="inventoryRequest" messageType="inv:getInventoryStatusRequest"/>
+        <variable name="inventoryResponse" messageType="inv:getInventoryStatusResponse"/>
+        <variable name="productionRequest" messageType="prod:planProductionOrderRequest"/>
+        <variable name="productionResponse" messageType="prod:planProductionOrderResponse"/>
+    </variables>
+
+    <sequence>
+        <receive partnerLink="client" portType="tns:ProductionProcessPortType"
+                 operation="process" variable="input" createInstance="yes"/>
+
+        <assign name="prepareServiceRequests">
+            <copy>
+                <from variable="input" part="parameters" query="/tns:processRequest/tns:productId"/>
+                <to variable="inventoryRequest" part="parameters" query="/inv:getInventoryStatus/inv:productId"/>
+            </copy>
+            <copy>
+                <from variable="input" part="parameters" query="/tns:processRequest/tns:orderId"/>
+                <to variable="productionRequest" part="parameters" query="/prod:planProductionOrder/prod:orderId"/>
+            </copy>
+            <!-- hardcode productType -->
+            <copy>
+                <from>
+                    <literal>
+                        <prod:productType>ExampleType</prod:productType>
+                    </literal>
+                </from>
+                <to variable="productionRequest" part="parameters" query="/prod:planProductionOrder/prod:productType"/>
+            </copy>
+        </assign>
+
+        <flow>
+            <sequence>
+                <invoke partnerLink="InventoryPartner" portType="inv:InventoryServicePortType"
+                        operation="getInventoryStatus" inputVariable="inventoryRequest"
+                        outputVariable="inventoryResponse"/>
+            </sequence>
+
+            <sequence>
+                <invoke partnerLink="ProductionPartner" portType="prod:ProductionServicePortType"
+                        operation="planProductionOrder" inputVariable="productionRequest"
+                        outputVariable="productionResponse"/>
+            </sequence>
+        </flow>
+
+        <assign name="prepareResponse">
+            <copy>
+                <from>
+                    <literal>
+                        <tns:processResponse>
+                            <tns:resultMessage>Service calls complete</tns:resultMessage>
+                        </tns:processResponse>
+                    </literal>
+                </from>
+                <to variable="output" part="parameters"/>
+            </copy>
+        </assign>
+
+        <reply partnerLink="client" portType="tns:ProductionProcessPortType"
+               operation="process" variable="output"/>
+    </sequence>
+</process>

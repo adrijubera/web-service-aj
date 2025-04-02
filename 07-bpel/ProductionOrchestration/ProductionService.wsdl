@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<wsdl:definitions xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/"
+                  xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/"
+                  xmlns:tns="http://tutorial2.mock_web_service"
+                  xmlns:xsd="http://www.w3.org/2001/XMLSchema"
+                  targetNamespace="http://tutorial2.mock_web_service">
+    
+    <wsdl:types>
+        <xsd:schema xmlns:xsd="http://www.w3.org/2001/XMLSchema"
+                    targetNamespace="http://tutorial2.mock_web_service">
+            <xsd:element name="planProductionOrder">
+                <xsd:complexType>
+                    <xsd:sequence>
+                        <xsd:element name="orderId" type="xsd:int"/>
+                        <xsd:element name="productType" type="xsd:string"/>
+                    </xsd:sequence>
+                </xsd:complexType>
+            </xsd:element>
+            <xsd:element name="planProductionOrderResponse">
+                <xsd:complexType>
+                    <xsd:sequence>
+                        <xsd:element name="responseMessage" type="xsd:string"/>
+                    </xsd:sequence>
+                </xsd:complexType>
+            </xsd:element>
+        </xsd:schema>
+    </wsdl:types>
+
+    <wsdl:message name="planProductionOrderRequest">
+        <wsdl:part name="parameters" element="tns:planProductionOrder"/>
+    </wsdl:message>
+    
+    <wsdl:message name="planProductionOrderResponse">
+        <wsdl:part name="parameters" element="tns:planProductionOrderResponse"/>
+    </wsdl:message>
+
+    <wsdl:portType name="ProductionServicePortType">
+        <wsdl:operation name="planProductionOrder">
+            <wsdl:input message="tns:planProductionOrderRequest"/>
+            <wsdl:output message="tns:planProductionOrderResponse"/>
+        </wsdl:operation>
+    </wsdl:portType>
+
+    <wsdl:binding name="ProductionServiceBinding" type="tns:ProductionServicePortType">
+        <soap:binding style="rpc" transport="http://schemas.xmlsoap.org/soap/http"/>
+        <wsdl:operation name="planProductionOrder">
+            <soap:operation soapAction="http://tutorial2.mock_web_service/planProductionOrder"/>
+            <wsdl:input>
+                <soap:body use="encoded" namespace="http://tutorial2.mock_web_service" encodingStyle="http://schemas.xmlsoap.org/soap/encoding"/>
+            </wsdl:input>
+            <wsdl:output>
+                <soap:body use="encoded" namespace="http://tutorial2.mock_web_service" encodingStyle="http://schemas.xmlsoap.org/soap/encoding"/>
+            </wsdl:output>
+        </wsdl:operation>
+    </wsdl:binding>
+
+    <wsdl:service name="ProductionService">
+        <wsdl:port name="ProductionServicePort" binding="tns:ProductionServiceBinding">
+            <soap:address location="http://127.0.0.1:8000/ProductionService"/>
+        </wsdl:port>
+    </wsdl:service>
+</wsdl:definitions>
