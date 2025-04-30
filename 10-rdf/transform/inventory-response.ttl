@@ -1,0 +1,5 @@
+@prefix ex: <https://example.org/vocab#> .
+@prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
+
+<https://example.org/resource/inventory/1> a ex:InventoryStatus ;
+    ex:status "Inventory status for product ID 1: In stock"^^xsd:string .

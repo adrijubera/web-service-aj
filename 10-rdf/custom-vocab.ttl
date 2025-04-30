@@ -1,0 +1,34 @@
+@prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
+@prefix rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .
+@prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
+@prefix ex: <https://example.org/vocab#> .
+
+# Clases
+ex:Message a rdfs:Class ;
+    rdfs:label "System Message"@en ;
+    rdfs:comment "A message exchanged in the system including references to orders and products."@en .
+
+ex:InventoryStatus a rdfs:Class ;
+    rdfs:label "Inventory Status"@en ;
+    rdfs:comment "Describes availability of a specific product."@en .
+
+# Propiedades
+ex:orderNumber a rdf:Property ;
+    rdfs:domain ex:Message ;
+    rdfs:range xsd:string ;
+    rdfs:label "Order Number"@en .
+
+ex:productID a rdf:Property ;
+    rdfs:domain ex:Message ;
+    rdfs:range xsd:string ;
+    rdfs:label "Product ID"@en .
+
+ex:actionStatus a rdf:Property ;
+    rdfs:domain ex:Message ;
+    rdfs:range xsd:string ;
+    rdfs:label "Action Status"@en .
+
+ex:status a rdf:Property ;
+    rdfs:domain ex:InventoryStatus ;
+    rdfs:range xsd:string ;
+    rdfs:label "Status description"@en .

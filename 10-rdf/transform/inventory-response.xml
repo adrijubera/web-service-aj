@@ -1,0 +1,9 @@
+<soapenv:Envelope xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/"
+                  xmlns:tns="http://tutorial2.mock_web_service">
+   <soapenv:Header/>
+   <soapenv:Body>
+      <tns:getInventoryStatusResponse>
+         <status>Inventory status for product ID 1: In stock</status>
+      </tns:getInventoryStatusResponse>
+   </soapenv:Body>
+</soapenv:Envelope>

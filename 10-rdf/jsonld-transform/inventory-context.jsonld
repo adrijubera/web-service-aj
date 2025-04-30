@@ -1,0 +1,12 @@
+{
+    "@context": {
+      "@base": "https://example.org/resource/",
+      "xsd": "http://www.w3.org/2001/XMLSchema#",
+      "InventoryStatus": "https://example.org/vocab#InventoryStatus",
+      "status": {
+        "@id": "https://example.org/vocab#status",
+        "@type": "xsd:string"
+      }
+    }
+  }
+  
