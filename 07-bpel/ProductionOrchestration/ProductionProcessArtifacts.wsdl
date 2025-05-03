@@ -2,7 +2,10 @@
 <definitions xmlns="http://schemas.xmlsoap.org/wsdl/"
              xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/"
              xmlns:xsd="http://www.w3.org/2001/XMLSchema"
+             xmlns:plnk="http://docs.oasis-open.org/wsbpel/2.0/plnktype"
              xmlns:tns="http://bpel.tutorial7.process"
+             xmlns:inv="http://tutorial2.mock_web_service"
+             xmlns:prod="http://tutorial2.mock_web_service"
              targetNamespace="http://bpel.tutorial7.process">
 
     <types>
@@ -56,4 +59,17 @@
             <soap:address location="http://localhost:8080/ode/processes/ProductionProcess"/>
         </port>
     </service>
+
+    <plnk:partnerLinkType name="ClientLink">
+        <plnk:role name="myRole" portType="tns:ProductionProcessPortType"/>
+    </plnk:partnerLinkType>
+
+    <plnk:partnerLinkType name="InventoryLink">
+        <plnk:role name="inventoryRole" portType="inv:InventoryServicePortType"/>
+    </plnk:partnerLinkType>
+
+    <plnk:partnerLinkType name="ProductionLink">
+        <plnk:role name="productionRole" portType="prod:ProductionServicePortType"/>
+    </plnk:partnerLinkType>
+
 </definitions>
